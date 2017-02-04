@@ -4,7 +4,7 @@ var $ = require('jquery');
 
 SwaggerEditor.controller('MainCtrl', function MainCtrl(
   $scope, $rootScope, $stateParams, $location,
-  Editor, Storage, FileLoader, Analytics, defaults) {
+  Editor, Storage, FileLoader, Analytics, defaults, YAML) {
   Analytics.initialize();
 
   $rootScope.$on('$stateChangeStart', Editor.initializeEditor);
@@ -29,23 +29,30 @@ SwaggerEditor.controller('MainCtrl', function MainCtrl(
   */
   var loadYaml = function() {
     Storage.load('yaml').then(function(yaml) {
-      var url;
-      var disableProxy = false;
+      var swaggerHolder = parent.SwaggerHolder;
+      if (swaggerHolder) {
+        yaml = swaggerHolder.getSwagger();
+        $rootScope.editorValue = yaml;
+      } else {
+        // if swaggerHolder is not injected go in normal flow
+        var url;
+        var disableProxy = false;
 
-      // If there is a url provided, override the storage with that URL
-      if ($stateParams.import) {
-        url = $stateParams.import;
-        disableProxy = Boolean($stateParams['no-proxy']);
-        $location.search('import', null);
-        $location.search('no-proxy', null);
+        // If there is a url provided, override the storage with that URL
+        if ($stateParams.import) {
+          url = $stateParams.import;
+          disableProxy = Boolean($stateParams['no-proxy']);
+          $location.search('import', null);
+          $location.search('no-proxy', null);
 
-      // If there is no saved YAML either, load the default example
-      } else if (!yaml) {
-        url = defaults.examplesFolder + defaults.exampleFiles[0];
-      }
+          // If there is no saved YAML either, load the default example
+        } else if (!yaml) {
+          url = defaults.examplesFolder + defaults.exampleFiles[0];
+        }
 
-      if (url) {
-        FileLoader.loadFromUrl(url, disableProxy).then(assign);
+        if (url) {
+          FileLoader.loadFromUrl(url, disableProxy).then(assign);
+        }
       }
     });
   };
