@@ -116,6 +116,21 @@ var defaults = {
   disableFileMenu: false,
 
   /*
+   * Disables Open Example command on File menu
+  */
+  disableExamples: false,
+
+  /*
+   * Disables Import command on File menu
+  */
+  disableImport: false,
+    
+  /*
+   * Disables swagger logo in the File menu
+  */
+  disableSwaggerLogo : false,
+
+  /*
    * When it's enabled:
    *  * Editor will append `brandingCssClass` class to body tag
    *  * Editor will include branding templates at

@@ -1,6 +1,6 @@
 <div class="main-header">
 
-  <a href="http://swagger.io" target="_blank" class="logo" ng-if="!showHeaderBranding()"></a>
+  <a href="http://swagger.io" target="_blank" class="logo" ng-if="showSwaggerLogo()"></a>
 
   <div ng-include="'templates/branding-left.html'" ng-if="showHeaderBranding()" class="branding-3rdparty"></div>
 
@@ -16,23 +16,25 @@
       </button>
 
       <ul class="dropdown-menu" uib-dropdown-menu>
-        <li>
+        <!--<li>
           <a dropdown-toggle ng-click="newProject()" tabindex="-1" track-event="file new"><i class="fa fa-file-text"></i>&nbsp;<span>New</span></a>
-        </li>
+        </li>-->
         <li>
-          <a dropdown-toggle id="open-example" ng-click="openExamples()" tabindex="-1" track-event="file open-example"><i class="fa fa-folder-open highlighted"></i>&nbsp;<span>Open Example&hellip;</span></a>
+          <a dropdown-toggle id="open-example" ng-click="openExamples()" ng-if="showExamples()" tabindex="-1" track-event="file open-example"><i class="fa fa-folder-open highlighted"></i>&nbsp;<span>Open Example&hellip;</span></a>
         </li>
+        <!--
         <li class="divider"></li>
+        -->
         <li>
-          <a dropdown-toggle ng-click="openPasteJSON()" tabindex="-1" track-event="file paste-json"><i class="fa fa-clipboard"></i>&nbsp;<span>Paste JSON&hellip;</span></a>
+          <a dropdown-toggle ng-click="openPasteJSON()" ng-if="showExamples()" tabindex="-1" track-event="file paste-json" ><i class="fa fa-clipboard"></i>&nbsp;<span>Paste JSON&hellip;</span></a>
         </li>
         <li>
-          <a dropdown-toggle ng-click="openImportUrl()" tabindex="-1" track-event="file import url"><i class="fa fa-link"></i>&nbsp;<span>Import URL&hellip;</span></a>
+          <a dropdown-toggle ng-click="openImportUrl()" ng-if="showImport()" tabindex="-1" track-event="file import url"><i class="fa fa-link"></i>&nbsp;<span>Import URL&hellip;</span></a>
         </li>
         <li>
-          <a dropdown-toggle ng-click="openImportFile()" tabindex="-1" track-event="file import file"><i class="fa fa-file highlighted"></i>&nbsp;<span>Import File&hellip;</span></a>
+          <a dropdown-toggle ng-click="openImportFile()" ng-if="showImport()" tabindex="-1" track-event="file import file"><i class="fa fa-file highlighted"></i>&nbsp;<span>Import File&hellip;</span></a>
         </li>
-        <li class="divider"></li>
+        <li class="divider" ng-if="showImport()" ng-if="showExamples()"></li>
         <li>
           <a download="swagger.yaml" data-downloadurl="{{yamlDownloadUrl}}"
             href="{{yamlDownloadHref}}" tabindex="-1" track-event="file download yaml"><i class="fa fa-download"></i>&nbsp;<span>Download YAML</span></a>
