@@ -29,16 +29,36 @@ SwaggerEditor.controller('EditorCtrl', function EditorCtrl($scope, $rootScope,
     debouncedOnAceChange();
   };
 
-  Editor.ready(function() {
-    Storage.load('yaml').then(function(yaml) {
-      $rootScope.editorValue = yaml;
-      onAceChange(true);
+  window.getSwaggerEditorValue = function() {
+    return Editor.getValue();
+  };
+
+  window.setSwaggerEditorValue = function(editorValue) {
+    Editor.setValue(editorValue);
+    $rootScope.editorValue = editorValue;
+    Storage.save('yaml', editorValue);
+    Builder.buildDocs(editorValue, {
+      resolve: true
     });
+  };
+
+  Editor.ready(function() {
+    if (window.onEditorLoad) {
+      window.onEditorLoad();
+    } else {
+      Storage.load('yaml').then(function(yaml) {
+        $rootScope.editorValue = yaml;
+        onAceChange(true);
+      });
+    }
   });
 
   /** When there is a change on ace */
   function onAceChange() {
     var value = $rootScope.editorValue;
+    if (window.onSwaggerEditorChange) {
+      window.onSwaggerEditorChange(value);
+    }
 
     Storage.save('yaml', value);
     ExternalHooks.trigger('code-change', []);

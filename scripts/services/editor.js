@@ -303,6 +303,25 @@ SwaggerEditor.service('Editor', function Editor(Autocomplete, ASTManager,
     }
   };
 
+  /*
+   * set editor value
+  */
+  var setValue = function(value) {
+    if (editor) {
+      editor.getSession().setValue(value);
+    }
+  };
+
+  /*
+   * get editor value
+  */
+  var getValue = function() {
+    if (!editor) {
+      return null;
+    }
+    return editor.session.getValue();
+  };
+
   this.aceLoaded = aceLoaded;
   this.ready = ready;
   this.annotateYAMLErrors = annotateYAMLErrors;
@@ -320,4 +339,6 @@ SwaggerEditor.service('Editor', function Editor(Autocomplete, ASTManager,
   this.adjustFontSize = adjustFontSize;
   this.resetSettings = resetSettings;
   this.focus = focus;
+  this.setValue = setValue;
+  this.getValue = getValue;
 });
